@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Order Placed — ECOMM STORE{% endblock %}
+{% block extra_css %}
+<style>
+    .success-section { min-height: 70vh; display: flex; align-items: center; justify-content: center; padding: 60px 20px; }
+    .success-card { background: var(--white); border: 1px solid var(--border); padding: 60px 50px; text-align: center; max-width: 520px; width: 100%; }
+    .success-icon { width: 72px; height: 72px; background: var(--black); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; }
+    .success-icon i { color: var(--gold); font-size: 1.8rem; }
+    .success-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 400; margin-bottom: 12px; }
+    .success-title em { font-style: italic; color: var(--gold); }
+    .success-sub { font-size: 0.9rem; color: var(--gray); line-height: 1.7; margin-bottom: 32px; }
+    .success-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+</style>
+{% endblock %}
+{% block content %}
+<div class="success-section">
+    <div class="success-card">
+        <div class="success-icon"><i class="fas fa-check"></i></div>
+        <h2 class="success-title">Order <em>Confirmed!</em></h2>
+        <p class="success-sub">Thank you for shopping with ECOMM STORE. Your order has been placed successfully and a confirmation email has been sent to you.</p>
+        <div class="success-actions">
+            <a href="{% url 'order_history' %}" class="btn-vogue">View My Orders</a>
+            <a href="{% url 'product_list' %}" class="btn-vogue-outline">Continue Shopping</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Products — VOGUE STORE{% endblock %}
+{% block extra_css %}
+<style>
+    .page-hero { background: var(--black); padding: 60px 40px; text-align: center; color: #fff; }
+    .page-hero .eyebrow { font-size: 0.68rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; display: block; }
+    .page-hero h1 { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 400; }
+    .page-hero h1 em { font-style: italic; color: var(--gold); }
+    .filter-bar { background: var(--white); border-bottom: 1px solid var(--border); padding: 16px 40px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .filter-btn { padding: 7px 18px; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; border: 1.5px solid var(--border); background: transparent; cursor: pointer; text-decoration: none; color: var(--black); transition: all 0.2s; border-radius: 2px; }
+    .filter-btn:hover, .filter-btn.active { background: var(--black); color: var(--white); border-color: var(--black); }
+    .product-grid { padding: 40px; }
+    .product-card { background: var(--white); overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; }
+    .product-card:hover { transform: translateY(-4px); box-shadow: 0 16px 36px rgba(0,0,0,0.1); }
+    .product-img-wrap { position: relative; overflow: hidden; aspect-ratio: 3/4; }
+    .product-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+    .product-card:hover .product-img-wrap img { transform: scale(1.05); }
+    .product-actions { position: absolute; bottom: -60px; left: 0; right: 0; background: rgba(0,0,0,0.88); padding: 14px 10px; display: flex; gap: 6px; justify-content: center; transition: bottom 0.3s; flex-wrap: wrap; }
+    .product-card:hover .product-actions { bottom: 0; }
+    .product-actions a { color: #fff; font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; padding: 6px 10px; border: 1px solid #444; transition: all 0.2s; white-space: nowrap; }
+    .product-actions a:hover { background: var(--gold); border-color: var(--gold); color: #000; }
+    .product-body { padding: 16px 12px; text-align: center; }
+    .product-category-tag { font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+    .product-name { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 400; margin-bottom: 6px; color: var(--black); }
+    .product-rating { color: var(--gold); font-size: 0.72rem; margin-bottom: 4px; }
+    .product-price { font-weight: 700; font-size: 0.95rem; color: var(--black); }
+    .search-info { font-size: 0.85rem; color: var(--gray); padding: 10px 40px 0; }
+    .no-products { text-align: center; padding: 80px 40px; color: var(--gray); }
+    .no-products i { font-size: 3rem; color: var(--border); margin-bottom: 20px; display: block; }
+</style>
+{% endblock %}
+{% block content %}
+
+<div class="page-hero">
+    <span class="eyebrow">Shop</span>
+    <h1>All <em>Products</em></h1>
+</div>
+
+<!-- Filter Bar -->
+<div class="filter-bar">
+    <span style="font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;margin-right:8px;">Filter:</span>
+    <a href="{% url 'product_list' %}" class="filter-btn {% if not request.GET.category and not request.GET.q %}active{% endif %}">All</a>
+    <a href="{% url 'product_list' %}?category=men" class="filter-btn {% if request.GET.category == 'men' %}active{% endif %}">Men</a>
+    <a href="{% url 'product_list' %}?category=women" class="filter-btn {% if request.GET.category == 'women' %}active{% endif %}">Women</a>
+    <a href="{% url 'product_list' %}?category=kids" class="filter-btn {% if request.GET.category == 'kids' %}active{% endif %}">Kids</a>
+
+    <div style="margin-left:auto;">
+        <form method="GET" style="display:flex;gap:8px;align-items:center;">
+            {% if request.GET.category %}<input type="hidden" name="category" value="{{ request.GET.category }}">{% endif %}
+            <input type="text" name="q" placeholder="Search products..." value="{{ request.GET.q }}"
+                style="padding:7px 14px;border:1.5px solid var(--border);font-size:0.8rem;outline:none;border-radius:2px;font-family:'Inter',sans-serif;width:200px;">
+            <button type="submit" class="filter-btn active">Search</button>
+            {% if request.GET.q or request.GET.category %}
+            <a href="{% url 'product_list' %}" class="filter-btn">Clear</a>
+            {% endif %}
+        </form>
+    </div>
+</div>
+
+{% if request.GET.q %}
+<p class="search-info">Showing results for "<strong>{{ request.GET.q }}</strong>" — {{ products|length }} found</p>
+{% endif %}
+
+<div class="product-grid">
+    {% if products %}
+    <div class="row g-4">
+        {% for product in products %}
+        <div class="col-6 col-md-4 col-lg-3">
+            <div class="product-card">
+                <div class="product-img-wrap">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    <div class="product-actions">
+                        <a href="{% url 'add_to_cart' product.id %}"><i class="fas fa-bag-shopping me-1"></i>Cart</a>
+                        <a href="{% url 'checkout' product.id %}">Buy Now</a>
+                        <a href="{% url 'add_to_wishlist' product.id %}"><i class="fas fa-heart"></i></a>
+                    </div>
+                </div>
+                <div class="product-body">
+                    <p class="product-category-tag">{{ product.get_category_display }}</p>
+                    <h5 class="product-name">{{ product.name }}</h5>
+                    {% if product.rating %}
+                    <div class="product-rating">
+                        {% for i in "12345" %}{% if forloop.counter <= product.rating %}★{% else %}☆{% endif %}{% endfor %}
+                        <span style="color:var(--gray);font-size:0.7rem;"> ({{ product.rating }}/5)</span>
+                    </div>
+                    {% endif %}
+                    <p class="product-price">₹{{ product.price }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="no-products">
+        <i class="fas fa-search"></i>
+        <h4 style="font-family:'Playfair Display',serif;font-weight:400;">No products found</h4>
+        <p style="margin-top:8px;">Try a different search term or browse all products.</p>
+        <a href="{% url 'product_list' %}" class="btn-vogue" style="margin-top:20px;">View All</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}About Us — ECOMM STORE{% endblock %}
+{% block extra_css %}
+<style>
+    .about-hero { background: var(--black); padding: 80px 40px; text-align: center; color: #fff; }
+    .about-hero .eyebrow { font-size: 0.68rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; display: block; }
+    .about-hero h1 { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 400; }
+    .about-hero h1 em { font-style: italic; color: var(--gold); }
+    .about-section { padding: 70px 40px; }
+    .about-img { width: 100%; height: 500px; object-fit: cover; }
+    .about-text h2 { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 400; margin-bottom: 20px; }
+    .about-text h2 em { font-style: italic; color: var(--gold); }
+    .about-text p { font-size: 0.95rem; line-height: 1.9; color: var(--gray); margin-bottom: 16px; }
+    .stat-box { text-align: center; padding: 30px; border: 1px solid var(--border); }
+    .stat-box h3 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--gold); }
+    .stat-box p { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray); margin: 0; }
+</style>
+{% endblock %}
+{% block content %}
+<div class="about-hero">
+    <span class="eyebrow">Our Story</span>
+    <h1>About <em>ECOMM STORE</em></h1>
+</div>
+<div class="about-section">
+    <div class="row g-5 align-items-center mb-5">
+        <div class="col-md-6">
+            <img src="{% static 'img/aboutus.jpg' %}" class="about-img" alt="About Us">
+        </div>
+        <div class="col-md-6 about-text">
+            <h2>Fashion for <em>Everyone</em></h2>
+            <p>VOGUE STORE is a premium fashion destination offering curated collections for men, women, and kids. We believe style should be accessible to everyone.</p>
+            <p>Founded with a passion for quality clothing, we source the finest fabrics and work with skilled artisans to bring you timeless pieces that never go out of style.</p>
+            <p>From casual everyday wear to special occasion outfits, our collections are designed to make you feel confident and beautiful.</p>
+            <a href="{% url 'product_list' %}" class="btn-vogue" style="margin-top:10px;">Shop Now</a>
+        </div>
+    </div>
+    <div class="row g-4 mt-4">
+        <div class="col-6 col-md-3"><div class="stat-box"><h3>500+</h3><p>Products</p></div></div>
+        <div class="col-6 col-md-3"><div class="stat-box"><h3>10K+</h3><p>Happy Customers</p></div></div>
+        <div class="col-6 col-md-3"><div class="stat-box"><h3>3</h3><p>Collections</p></div></div>
+        <div class="col-6 col-md-3"><div class="stat-box"><h3>5★</h3><p>Average Rating</p></div></div>
+    </div>
+</div>
+{% endblock %}

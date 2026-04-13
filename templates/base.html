@@ -1,0 +1,167 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ECOMM STORE{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --black: #0a0a0a;
+            --white: #ffffff;
+            --cream: #faf8f5;
+            --gold: #c9a96e;
+            --gold-light: #e8d5b0;
+            --gray: #6b6b6b;
+            --light-gray: #f0eeeb;
+            --border: #e0ddd8;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--black); }
+        .navbar-vogue { background: var(--black); padding: 0; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; border-bottom: 1px solid #222; }
+        .navbar-top { display: flex; align-items: center; justify-content: space-between; padding: 14px 40px; flex-wrap: wrap; gap: 10px; }
+        .nav-brand { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: var(--white); letter-spacing: 0.08em; text-decoration: none; }
+        .nav-brand span { color: var(--gold); }
+        .nav-search { display: flex; align-items: center; background: #1a1a1a; border: 1px solid #333; border-radius: 2px; padding: 8px 16px; gap: 8px; width: 280px; }
+        .nav-search input { background: none; border: none; outline: none; color: var(--white); font-size: 0.85rem; width: 100%; }
+        .nav-search input::placeholder { color: #666; }
+        .nav-search i { color: #666; font-size: 0.8rem; }
+        .nav-search button { background: none; border: none; color: var(--gold); cursor: pointer; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; }
+        .nav-icons { display: flex; align-items: center; gap: 20px; }
+        .nav-icon-link { color: #aaa; text-decoration: none; font-size: 0.75rem; letter-spacing: 0.08em; display: flex; align-items: center; gap: 6px; transition: color 0.2s; position: relative; }
+        .nav-icon-link:hover { color: var(--gold); }
+        .nav-icon-link i { font-size: 1rem; }
+        .nav-badge { position: absolute; top: -8px; right: -8px; background: var(--gold); color: var(--black); font-size: 0.6rem; font-weight: 700; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .nav-user-name { color: var(--gold); font-weight: 500; font-size: 0.8rem; }
+        .navbar-bottom { border-top: 1px solid #1e1e1e; background: #111; }
+        .nav-links { display: flex; justify-content: center; list-style: none; margin: 0; padding: 0; gap: 0; flex-wrap: wrap; }
+        .nav-links li a { display: block; padding: 12px 18px; color: #bbb; text-decoration: none; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; transition: all 0.2s; border-bottom: 2px solid transparent; }
+        .nav-links li a:hover, .nav-links li a.active { color: var(--white); border-bottom-color: var(--gold); }
+        .alert-vogue { background: #1a1a1a; color: var(--gold); border: 1px solid #333; border-radius: 2px; }
+        .btn-vogue { background: var(--black); color: var(--white); border: 1.5px solid var(--black); padding: 10px 24px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; display: inline-block; transition: all 0.25s; cursor: pointer; border-radius: 2px; }
+        .btn-vogue:hover { background: var(--gold); border-color: var(--gold); color: var(--black); }
+        .btn-vogue-outline { background: transparent; color: var(--black); border: 1.5px solid var(--black); padding: 8px 20px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; display: inline-block; transition: all 0.25s; cursor: pointer; border-radius: 2px; }
+        .btn-vogue-outline:hover { background: var(--black); color: var(--white); }
+        .btn-gold { background: var(--gold); color: var(--black); border: 1.5px solid var(--gold); padding: 10px 24px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; display: inline-block; transition: all 0.25s; cursor: pointer; border-radius: 2px; }
+        .btn-gold:hover { background: var(--black); color: var(--gold); border-color: var(--black); }
+        .footer { background: var(--black); color: #aaa; padding: 60px 40px 30px; margin-top: 80px; }
+        .footer-brand { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--white); margin-bottom: 10px; }
+        .footer-brand span { color: var(--gold); }
+        .footer h6 { color: var(--white); font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 16px; }
+        .footer a { color: #888; text-decoration: none; display: block; margin-bottom: 8px; font-size: 0.85rem; transition: color 0.2s; }
+        .footer a:hover { color: var(--gold); }
+        .footer-divider { border-color: #222; margin: 30px 0 20px; }
+        .footer-bottom { font-size: 0.78rem; color: #555; }
+        .social-icons { display: flex; gap: 14px; margin-top: 16px; }
+        .social-icons a { color: #666; font-size: 1.1rem; display: inline-block; }
+        .social-icons a:hover { color: var(--gold); }
+        main { padding-top: 96px; min-height: 70vh; }
+        .messages-container { padding: 10px 40px 0; }
+        @media (max-width: 768px) {
+            .navbar-top { padding: 12px 16px; }
+            .nav-search { width: 100%; order: 3; }
+            .nav-links li a { padding: 10px 10px; font-size: 0.65rem; }
+            main { padding-top: 140px; }
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+<nav class="navbar-vogue">
+    <div class="navbar-top">
+        <a href="{% url 'home' %}" class="nav-brand">ECOMM<span>.</span></a>
+        <form class="nav-search" method="GET" action="{% url 'product_list' %}">
+            <i class="fas fa-search"></i>
+            <input type="text" name="q" placeholder="Search styles..." value="{{ request.GET.q }}">
+            <button type="submit">GO</button>
+        </form>
+        <div class="nav-icons">
+            {% if user.is_authenticated %}
+                <span class="nav-user-name"><i class="fas fa-user-circle"></i> {{ user.username }}</span>
+                <a href="{% url 'order_history' %}" class="nav-icon-link"><i class="fas fa-box"></i> Orders</a>
+                <a href="{% url 'wishlist' %}" class="nav-icon-link"><i class="fas fa-heart"></i></a>
+                <a href="{% url 'product_cart' %}" class="nav-icon-link">
+                    <i class="fas fa-shopping-bag"></i>
+                    {% if cart_count %}<span class="nav-badge">{{ cart_count }}</span>{% endif %}
+                </a>
+                <a href="{% url 'logout' %}" class="nav-icon-link">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="nav-icon-link"><i class="fas fa-user"></i> Login</a>
+                <a href="{% url 'register' %}" class="btn-gold" style="padding:7px 16px;font-size:0.7rem;">Register</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="navbar-bottom">
+        <ul class="nav-links">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'product_list' %}">All Products</a></li>
+            <li><a href="{% url 'product_list' %}?category=men">Men</a></li>
+            <li><a href="{% url 'product_list' %}?category=women">Women</a></li>
+            <li><a href="{% url 'product_list' %}?category=kids">Kids</a></li>
+            <li><a href="{% url 'about' %}">About</a></li>
+            <li><a href="{% url 'contact' %}">Contact</a></li>
+        </ul>
+    </div>
+</nav>
+<main>
+    {% if messages %}
+    <div class="messages-container">
+        {% for message in messages %}
+        <div class="alert alert-vogue alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>{{ message }}
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+</main>
+<footer class="footer">
+    <div class="container-fluid">
+        <div class="row g-5">
+            <div class="col-md-4">
+                <div class="footer-brand">VOGUE<span>.</span></div>
+                <p style="font-size:0.85rem;line-height:1.8;margin-bottom:20px;">Premium fashion for men, women & kids. Quality clothing delivered to your doorstep.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-pinterest"></i></a>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <h6>Shop</h6>
+                <a href="{% url 'product_list' %}?category=men">Men</a>
+                <a href="{% url 'product_list' %}?category=women">Women</a>
+                <a href="{% url 'product_list' %}?category=kids">Kids</a>
+                <a href="{% url 'product_list' %}">All Products</a>
+            </div>
+            <div class="col-md-2">
+                <h6>Account</h6>
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}">Register</a>
+                {% if user.is_authenticated %}
+                <a href="{% url 'order_history' %}">My Orders</a>
+                <a href="{% url 'wishlist' %}">Wishlist</a>
+                {% endif %}
+            </div>
+            <div class="col-md-4">
+                <h6>Contact</h6>
+                <p style="font-size:0.85rem;"><i class="fas fa-envelope me-2" style="color:var(--gold)"></i> support@ecommstore.com</p>
+                <p style="font-size:0.85rem;margin-top:8px;"><i class="fas fa-phone me-2" style="color:var(--gold)"></i> +91 98765 43210</p>
+                <p style="font-size:0.85rem;margin-top:8px;"><i class="fas fa-map-marker-alt me-2" style="color:var(--gold)"></i> Jaipur, Rajasthan, India</p>
+            </div>
+        </div>
+        <hr class="footer-divider">
+        <div class="footer-bottom text-center">
+            <p>© 2026 ECOMM STORE. Built with Django. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

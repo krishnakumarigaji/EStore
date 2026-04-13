@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}My Orders — VOGUE STORE{% endblock %}
+{% block extra_css %}
+<style>
+    .page-hero { background: var(--black); padding: 50px 40px; text-align: center; color: #fff; }
+    .page-hero .eyebrow { font-size: 0.68rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; display: block; }
+    .page-hero h1 { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 400; }
+    .orders-section { padding: 50px 40px; }
+    .order-card { background: var(--white); border: 1px solid var(--border); margin-bottom: 20px; overflow: hidden; }
+    .order-header { background: var(--light-gray); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border-bottom: 1px solid var(--border); }
+    .order-id { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--gray); }
+    .order-date { font-size: 0.8rem; color: var(--gray); }
+    .order-status { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 5px 12px; border-radius: 2px; background: var(--black); color: var(--gold); }
+    .order-body { padding: 20px 24px; display: flex; gap: 20px; align-items: flex-start; }
+    .order-img { width: 80px; height: 100px; object-fit: cover; flex-shrink: 0; }
+    .order-product-name { font-family: 'Playfair Display', serif; font-size: 1.05rem; margin-bottom: 6px; }
+    .order-detail { font-size: 0.82rem; color: var(--gray); margin-bottom: 4px; }
+    .order-price { font-weight: 700; font-size: 1rem; color: var(--black); margin-top: 8px; }
+    .empty-orders { text-align: center; padding: 80px; color: var(--gray); }
+    .empty-orders i { font-size: 4rem; color: var(--border); margin-bottom: 20px; display: block; }
+</style>
+{% endblock %}
+{% block content %}
+<div class="page-hero">
+    <span class="eyebrow">Account</span>
+    <h1>My Orders</h1>
+</div>
+
+<div class="orders-section">
+    {% if orders %}
+    <p style="font-size:0.85rem;color:var(--gray);margin-bottom:24px;">{{ orders|length }} order{{ orders|length|pluralize }} found</p>
+    {% for order in orders %}
+    <div class="order-card">
+        <div class="order-header">
+            <div>
+                <span class="order-id">Order #{{ order.id }}</span>
+                <p class="order-date" style="margin-top:3px;"><i class="fas fa-calendar-alt me-1"></i>{{ order.created_at|date:"d M Y, H:i" }}</p>
+            </div>
+            <span class="order-status">Confirmed</span>
+        </div>
+        <div class="order-body">
+            <img src="{{ order.product.image.url }}" class="order-img" alt="{{ order.product.name }}">
+            <div style="flex:1;">
+                <p class="order-product-name">{{ order.product.name }}</p>
+                <p style="font-size:0.7rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;">{{ order.product.get_category_display }}</p>
+                <p class="order-detail"><i class="fas fa-user me-2" style="color:var(--gold);"></i>{{ order.name }}</p>
+                <p class="order-detail"><i class="fas fa-envelope me-2" style="color:var(--gold);"></i>{{ order.email }}</p>
+                <p class="order-detail"><i class="fas fa-map-marker-alt me-2" style="color:var(--gold);"></i>{{ order.address }}, {{ order.city }}, {{ order.state }} — {{ order.pincode }}</p>
+                <p class="order-price">₹{{ order.product.price }}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="empty-orders">
+        <i class="fas fa-box-open"></i>
+        <h4 style="font-family:'Playfair Display',serif;font-weight:400;">No orders yet</h4>
+        <p style="margin-top:8px;">Your order history will appear here once you make a purchase.</p>
+        <a href="{% url 'product_list' %}" class="btn-vogue" style="margin-top:24px;">Start Shopping</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

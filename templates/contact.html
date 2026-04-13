@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Contact Us — VOGUE STORE{% endblock %}
+{% block extra_css %}
+<style>
+    .page-hero { background: var(--black); padding: 60px 40px; text-align: center; color: #fff; }
+    .page-hero .eyebrow { font-size: 0.68rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; display: block; }
+    .page-hero h1 { font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 400; }
+    .contact-section { padding: 60px 40px; }
+    .contact-form-card { background: var(--white); border: 1px solid var(--border); padding: 40px; }
+    .contact-form-card h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 400; margin-bottom: 28px; }
+    .form-label-vogue { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray); margin-bottom: 6px; display: block; }
+    .form-control-vogue { width: 100%; padding: 12px 16px; border: 1.5px solid var(--border); background: var(--cream); font-size: 0.88rem; outline: none; transition: border-color 0.2s; border-radius: 2px; margin-bottom: 18px; font-family: 'Inter', sans-serif; }
+    .form-control-vogue:focus { border-color: var(--black); }
+    .info-item { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 24px; }
+    .info-icon { width: 44px; height: 44px; background: var(--black); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .info-icon i { color: var(--gold); font-size: 1rem; }
+    .info-label { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+    .info-value { font-size: 0.9rem; color: var(--black); }
+</style>
+{% endblock %}
+{% block content %}
+<div class="page-hero">
+    <span class="eyebrow">Get In Touch</span>
+    <h1>Contact Us</h1>
+</div>
+<div class="contact-section">
+    <div class="row g-5">
+        <div class="col-md-7">
+            <div class="contact-form-card">
+                <h3>Send us a Message</h3>
+                <form method="POST">
+                    {% csrf_token %}
+                    <label class="form-label-vogue">Your Name</label>
+                    <input type="text" class="form-control-vogue" name="name" placeholder="Priya Sharma" required>
+                    <label class="form-label-vogue">Email Address</label>
+                    <input type="email" class="form-control-vogue" name="email" placeholder="priya@email.com" required>
+                    <label class="form-label-vogue">Message</label>
+                    <textarea class="form-control-vogue" name="message" rows="5" placeholder="How can we help you?" required></textarea>
+                    <button type="submit" class="btn-vogue" style="padding:14px 32px;">Send Message</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <h3 style="font-family:'Playfair Display',serif;font-weight:400;font-size:1.5rem;margin-bottom:30px;">Contact Information</h3>
+            <div class="info-item">
+                <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
+                <div><p class="info-label">Address</p><p class="info-value">Jaipur, Rajasthan, India — 302001</p></div>
+            </div>
+            <div class="info-item">
+                <div class="info-icon"><i class="fas fa-envelope"></i></div>
+                <div><p class="info-label">Email</p><p class="info-value">support@voguestore.com</p></div>
+            </div>
+            <div class="info-item">
+                <div class="info-icon"><i class="fas fa-phone"></i></div>
+                <div><p class="info-label">Phone</p><p class="info-value">+91 98765 43210</p></div>
+            </div>
+            <div class="info-item">
+                <div class="info-icon"><i class="fas fa-clock"></i></div>
+                <div><p class="info-label">Hours</p><p class="info-value">Mon–Sat: 9am – 6pm IST</p></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

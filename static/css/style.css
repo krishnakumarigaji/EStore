@@ -1,0 +1,21 @@
+.product-img{
+    position: relative;
+}
+
+.hover-buttons{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    display: none;
+    gap:10px;
+}
+
+.product-card:hover .hover-buttons{
+    display:flex;
+}
+
+.hover-buttons a{
+    border-radius:50%;
+    padding:10px;
+}

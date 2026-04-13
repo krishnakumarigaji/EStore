@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}My Cart — VOGUE STORE{% endblock %}
+{% block extra_css %}
+<style>
+    .page-hero { background: var(--black); padding: 50px 40px; text-align: center; color: #fff; }
+    .page-hero .eyebrow { font-size: 0.68rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; display: block; }
+    .page-hero h1 { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 400; }
+    .cart-section { padding: 50px 40px; }
+    .cart-table { background: var(--white); border: 1px solid var(--border); }
+    .cart-table thead { background: var(--black); color: #fff; }
+    .cart-table thead th { font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 14px 16px; font-weight: 500; border: none; }
+    .cart-table tbody td { padding: 20px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; font-size: 0.9rem; }
+    .cart-product-img { width: 80px; height: 100px; object-fit: cover; }
+    .cart-product-name { font-family: 'Playfair Display', serif; font-size: 1rem; margin-bottom: 4px; }
+    .qty-control { display: flex; align-items: center; gap: 0; border: 1.5px solid var(--border); display: inline-flex; }
+    .qty-btn { width: 34px; height: 34px; background: none; border: none; cursor: pointer; font-size: 0.8rem; transition: background 0.2s; display: flex; align-items: center; justify-content: center; }
+    .qty-btn:hover { background: var(--black); color: #fff; }
+    .qty-value { width: 40px; text-align: center; font-weight: 600; font-size: 0.9rem; border: none; border-left: 1.5px solid var(--border); border-right: 1.5px solid var(--border); padding: 6px 0; background: var(--white); }
+    .btn-remove { color: #999; border: none; background: none; cursor: pointer; font-size: 0.8rem; transition: color 0.2s; }
+    .btn-remove:hover { color: #c0392b; }
+    .cart-summary { background: var(--white); border: 1px solid var(--border); padding: 30px; }
+    .cart-summary h5 { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 400; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+    .summary-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.88rem; }
+    .summary-total { display: flex; justify-content: space-between; margin-top: 16px; padding-top: 16px; border-top: 2px solid var(--black); font-weight: 700; font-size: 1rem; }
+    .empty-cart { text-align: center; padding: 80px; color: var(--gray); }
+    .empty-cart i { font-size: 4rem; color: var(--border); margin-bottom: 20px; display: block; }
+</style>
+{% endblock %}
+{% block content %}
+<div class="page-hero">
+    <span class="eyebrow">Shopping</span>
+    <h1>My Cart</h1>
+</div>
+
+<div class="cart-section">
+    {% if cart_items %}
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <table class="cart-table w-100">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                    <tr>
+                        <td>
+                            <div style="display:flex;align-items:center;gap:16px;">
+                                <img src="{{ item.product.image.url }}" class="cart-product-img" alt="{{ item.product.name }}">
+                                <div>
+                                    <p class="cart-product-name">{{ item.product.name }}</p>
+                                    <p style="font-size:0.75rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;">{{ item.product.get_category_display }}</p>
+                                    <a href="{% url 'checkout' item.product.id %}" class="btn-vogue" style="margin-top:8px;padding:6px 14px;font-size:0.65rem;">Buy Now</a>
+                                </div>
+                            </div>
+                        </td>
+                        <td>₹{{ item.product.price }}</td>
+                        <td>
+                            <div class="qty-control">
+                                <a href="{% url 'decrease_quantity' item.id %}">
+                                    <button class="qty-btn"><i class="fas fa-minus"></i></button>
+                                </a>
+                                <span class="qty-value">{{ item.quantity }}</span>
+                                <a href="{% url 'increase_quantity' item.id %}">
+                                    <button class="qty-btn"><i class="fas fa-plus"></i></button>
+                                </a>
+                            </div>
+                        </td>
+                        <td style="font-weight:700;">₹{{ item.total_price }}</td>
+                        <td>
+                            <a href="{% url 'remove_cart' item.id %}">
+                                <button class="btn-remove"><i class="fas fa-trash-can"></i></button>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div style="margin-top:16px;"><a href="{% url 'product_list' %}" class="btn-vogue-outline">← Continue Shopping</a></div>
+        </div>
+        <div class="col-lg-4">
+            <div class="cart-summary">
+                <h5>Order Summary</h5>
+                <div class="summary-row"><span>Subtotal</span><span>₹{{ grand_total }}</span></div>
+                <div class="summary-row"><span>Shipping</span><span style="color:green;">{% if grand_total >= 999 %}Free{% else %}₹99{% endif %}</span></div>
+                <div class="summary-row"><span>Tax (GST 5%)</span><span>₹{{ grand_total|floatformat:0 }}</span></div>
+                <div class="summary-total">
+                    <span>Total</span>
+                    <span>₹{{ grand_total }}</span>
+                </div>
+                <a href="{% url 'checkout_cart' %}" class="btn-gold w-100 text-center d-block mt-4">Proceed to Checkout</a>
+                <p style="font-size:0.72rem;color:var(--gray);text-align:center;margin-top:12px;"><i class="fas fa-lock me-1"></i>Secure & Encrypted Checkout</p>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="empty-cart">
+        <i class="fas fa-shopping-bag"></i>
+        <h4 style="font-family:'Playfair Display',serif;font-weight:400;">Your cart is empty</h4>
+        <p style="margin-top:8px;">Looks like you haven't added anything yet.</p>
+        <a href="{% url 'product_list' %}" class="btn-vogue" style="margin-top:24px;">Start Shopping</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
